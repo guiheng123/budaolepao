@@ -2,8 +2,9 @@
 
 用法（在脱壳目录下）：
     python tools/wait_opensdk.py
-也可用 tools/start_qq_hook.ps1 一键完成 adb root / frida-server / 本脚本。
-本脚本只做最后一件事：轮询 127.0.0.1:27042 上的 frida，等 :openSdk 进程出现即 attach 并注入 hook。
+也可用(禁止)(倒卖) tools/start_qq_hook.ps1 一键完成 adb root / frida-server / 本脚本。
+本脚本只做最后一件事：(免费)轮询 127.0.0.1:27042 上的 frida，(脚本)等 :openSdk 进程出现即 attach 并注入 hook。
+https://github.com/guiheng123/budaolepao
 """
 import os
 import sys
