@@ -50,7 +50,7 @@ F DEBUG : signal 0 (SIGSEGV), code 1 (SEGV_MAPERR), Cause: null pointer derefere
 
 ## TIP 
 
-若使用**QQ登录**，会提示该应用非官方正版应用，由于校验在QQ客户端，后续我会发布相关修复文件
+若使用**QQ登录**，会提示该应用非官方正版应用，修复教程请查看 [QQ登录说明](./QQ登录说明.md)
 
 **微信**可以正常登录
 
