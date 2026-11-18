@@ -36,3 +36,4 @@ if (-not $running) {
 Write-Host '[3/3] 挂签名伪造 hook（保持本窗口开着，Ctrl-C 结束）' -ForegroundColor Cyan
 $env:PYTHONIOENCODING = 'utf-8'
 python (Join-Path $root 'tools\wait_opensdk.py')
+#https://github.com/guiheng123/budaolepao禁止倒卖
