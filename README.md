@@ -48,13 +48,17 @@ F DEBUG : signal 0 (SIGSEGV), code 1 (SEGV_MAPERR), Cause: null pointer derefere
 
 安装前卸载原版，官方签名与 debug key 不同，覆盖安装一定失败，必须先卸载
 
-视频教程：https://www.bilibili.com/video/BV1crsD6yE7N/
+视频教程(https://www.bilibili.com/video/BV1crsD6yE7N/)
+
+微信安装教程和一些问题解答(https://www.bilibili.com/video/BV1xYs86bEHb/)
 
 ## TIP 
 
 若使用**QQ登录**，会提示该应用非官方正版应用，修复教程请查看 [QQ登录说明](./QQ登录说明.md)
 
 **微信**，会提示签名不对，修复教程请查看 [微信登录说明](./微信登录说明.md)
+
+
 
 感谢您的star和issues
 
