@@ -1,11 +1,3 @@
-"""常驻脚本：QQ 的 :openSdk 进程一出现就挂签名伪造 hook，让 QQ 认为 com.lptiyu.tanke 是官方正版。
-
-用法（在脱壳目录下）：
-    python tools/wait_opensdk.py
-也可用(禁止)(倒卖) tools/start_qq_hook.ps1 一键完成 adb root / frida-server / 本脚本。
-本脚本只做最后一件事：(免费)轮询 127.0.0.1:27042 上的 frida，(脚本)等 :openSdk 进程出现即 attach 并注入 hook。
-https://github.com/guiheng123/budaolepao
-"""
 import os
 import sys
 import time
@@ -61,7 +53,7 @@ Java.perform(function () {
       });
     } catch (e) { send({ t: 'err', what: m, e: e.message }); }
   });
-
+  // https://github.com/guiheng123/budaolepao
   // 2) SigningInfo 兜底（API 28+ 走这里取签名）
   try {
     const SI = Java.use('android.content.pm.SigningInfo');

@@ -27,23 +27,12 @@ pip install -r requirements.txt
 **一键启动 hook**
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File tools\start_qq_hook.ps1
+powershell -ExecutionPolicy Bypass -File tools\start_hook.ps1
 ```
+在终端输入 1
 
 脚本依次做三件事：`adb connect/root/forward tcp:27042` → 推送并启动 frida-server → 常驻运行
 `tools\wait_opensdk.py`。**窗口保持开着**，Ctrl-C 结束。
-
-**手动版**（`DEV` 换成 `adb devices` 里显示的序列号，如 `127.0.0.1:5555`）：
-
-```powershell
-$DEV = '127.0.0.1:5555'
-adb connect $DEV
-adb -s $DEV root
-adb -s $DEV forward tcp:27042 tcp:27042
-adb -s $DEV push tools\frida\frida-server /data/local/tmp/frida-server
-adb -s $DEV shell "chmod 755 /data/local/tmp/frida-server; nohup /data/local/tmp/frida-server >/dev/null 2>&1 &"
-python tools\wait_opensdk.py
-```
 
 ### 3. 登录
 
@@ -99,7 +88,7 @@ python tools\wait_opensdk.py
 
 | 路径 | 作用 |
 |---|---|
-| `tools\start_qq_hook.ps1` | 一键：adb root / 起 frida-server / 挂 hook |
+| `tools\start_hook.ps1` | 一键：adb root / 起 frida-server / 挂 hook |
 | `tools\wait_opensdk.py` | 常驻轮询 `:openSdk`，出现即 attach 并注入签名伪造脚本 |
 | `tools\official_cert.der` | 从官方包 v2 签名块提取的证书（867 B，MD5 `D6AB92F37E0BDBFF74D08A64C19EA1D8`） |
 | `tools\frida\frida-server` | frida-server 16.7.19，x86_64 |
