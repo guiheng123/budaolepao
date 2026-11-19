@@ -11,7 +11,6 @@
 |---|---|
 | 设备 | MuMu Player 12（已开 root）；`adb devices` 里能看到一台 `device` 状态的设备 |
 | 已装应用 | `com.lptiyu.tanke`（重打包 debug 签名包），QQ 已登录 |
-| 本机 | Python 3 + `frida`（版本与 frida-server 对齐：16.7.19）、adb |
 | 目录 | 本目录的 `tools/frida/frida-server` 是 **x86_64** 版，对应 MuMu 的 x86_64 镜像 |
 
 ### 1. 装依赖（可忽略）
@@ -21,8 +20,6 @@ pip install -r requirements.txt
 ```
 
 ### 2. 如何使用
-
-二选一
 
 **一键启动 hook**
 
