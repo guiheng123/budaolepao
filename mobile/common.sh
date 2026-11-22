@@ -67,7 +67,10 @@ PY
 client_version() { python -c 'import frida; print(frida.__version__)' 2>/dev/null; }
 require_client() {
   local version
-  version="$(client_version)" || die "无法导入 frida-python，请运行 bash $HERE/install.sh（Termux 可能需要自行编译匹配的 Android 扩展）"
+  version="$(client_version)" || {
+    python -c 'import frida' >&2 || true
+    die "无法导入 frida-python，请运行 bash $HERE/install.sh（Termux 需本地编译匹配的 Android 扩展；若报 cannot locate symbol 见 README 的 _Py_NoneStruct 一节）"
+  }
   [ "$version" = "$FRIDA_VERSION" ] || die "客户端版本 $version 与要求的 $FRIDA_VERSION 不一致，请重新运行 install.sh"
   ok "frida-python 版本：$version"
 }

@@ -41,16 +41,17 @@ if [ "$(client_version || true)" != "$FRIDA_VERSION" ]; then
   log "安装 frida-python ${FRIDA_VERSION}（Termux 无匹配 wheel 时可能需要源码构建）"
   PIP_LOG="$HERE/bin/pip-frida.log"
   python -m pip --version >/dev/null 2>&1 || die "缺少 pip，请先 pkg install python-pip"
-  if ! python -m pip install --no-cache-dir --no-input "frida==${FRIDA_VERSION}" >"$PIP_LOG" 2>&1; then
-    warn "pip 安装失败，日志：$PIP_LOG"
-    tail -n 40 "$PIP_LOG" >&2 || true
-    warn "尝试官方 core-devkit + Python 扩展本地编译（绕过缺失的 Android 预编译工具链）"
-    pkg install -y clang make pkg-config || die "安装编译依赖失败"
+  # Termux 没有官方 Android wheel：--only-binary 让 pip 直接失败，不必先跑一遍注定失败的源码构建。
+  if ! python -m pip install --no-cache-dir --no-input --only-binary=:all: "frida==${FRIDA_VERSION}" >"$PIP_LOG" 2>&1; then
+    warn "pip 没有可用的预编译 wheel（日志：$PIP_LOG）"
+    tail -n 20 "$PIP_LOG" >&2 || true
+    warn "改用官方 core-devkit + Python 扩展本地编译（并把扩展显式链到 libpython，避免 _Py_NoneStruct 符号错误）"
+    pkg install -y clang make pkg-config patchelf || die "安装编译依赖失败"
     python -m pip install --no-input setuptools wheel || die "安装 Python 打包依赖失败"
     [ -f "$HERE/build_frida.py" ] || die "缺少 build_frida.py，请更新完整 mobile 目录"
     FRIDA_VERSION="$FRIDA_VERSION" python "$HERE/build_frida.py" >"$HERE/bin/build-frida.log" 2>&1 || {
       tail -n 60 "$HERE/bin/build-frida.log" >&2 || true
-      die "本地构建失败，完整日志：$HERE/bin/build-frida.log"
+      die "本地构建失败，完整日志：$HERE/bin/build-frida.log（若含 cannot locate symbol，先 pkg install patchelf 再重跑）"
     }
     ok "官方 devkit 本地构建成功"
   fi

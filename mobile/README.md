@@ -18,9 +18,15 @@ bash start.sh 1 --restart-server
 
 ### Termux frida-python 原生构建
 
-Termux 不一定有可用的官方 Android Python wheel。直接 `pip install frida` 可能尝试下载不存在的 Frida 预编译工具链。安装脚本会保存 pip 错误日志，并用 `build_frida.py`：下载官方匹配版本的 Frida core devkit 和 PyPI 源码，用 Termux clang 只编译 Python C binding，再通过官方 setup.py 的 `FRIDA_EXTENSION` 入口安装。**不是完整的 core 源码构建，也不是普通 Linux wheel。**需要标准带 GIL 的 CPython；free-threaded Python 不支持。构建输出保存在 `bin/build-frida.log`。
+Termux 不一定有可用的官方 Android Python wheel。安装脚本先用 `--only-binary` 试官方 wheel，失败后保存 pip 日志，并用 `build_frida.py`：下载官方匹配版本的 Frida core devkit 和 PyPI 源码，用 Termux clang 只编译 Python C binding，再通过官方 setup.py 的 `FRIDA_EXTENSION` 入口安装。**不是完整的 core 源码构建，也不是普通 Linux wheel。**需要标准带 GIL 的 CPython；free-threaded Python 不支持。构建输出保存在 `bin/build-frida.log`。
 
-本次已在 Android 15 虚拟机验证：系统 ABI 为 x86_64，但 Termux/aarch64 Python 3.14.10 运行于 ARM64 转译环境。匹配的 ARM64 core devkit 扩展成功编译、导入，且 Termux 普通用户可连上 root Frida server。原生 x86_64 Termux 和 arm64 真机仍未独立验证。
+**`_Py_NoneStruct` 符号错误**：Android 的 linker 不会把主程序符号暴露给 `dlopen` 的扩展模块，Termux 的 CPython 符号在 `libpython3.x.so` 里，只按桌面 Linux 的方式编译会得到 `dlopen failed: cannot locate symbol "_Py_NoneStruct"`。脚本现在链接扩展时显式带上 `-lpython3.x` / `-Wl,-rpath`，并在校验失败时用 `patchelf --add-needed` 兜底；需要 `pkg install patchelf`（安装脚本会自动装）。实在不行可临时绕过（把版本号换成 `ls $PREFIX/lib/libpython3*.so` 的结果）：
+
+```bash
+LD_PRELOAD=$PREFIX/lib/libpython3.14.so python -u hook.py --target qq
+```
+
+
 
 先运行客户端，再手动触发应用授权。QQ 默认等待精确进程名 `com.tencent.mobileqq:openSdk`；微信默认等待 `com.tencent.mm`。微信应在授权前通过系统设置强停后重开；划掉最近任务不等于强停。脚本不自动操作授权页，也不提交登录。
 
