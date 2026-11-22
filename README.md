@@ -52,6 +52,20 @@ F DEBUG : signal 0 (SIGSEGV), code 1 (SEGV_MAPERR), Cause: null pointer derefere
 
 微信安装教程和一些问题解答(https://www.bilibili.com/video/BV1xYs86bEHb/)
 
+## 手机端
+
+阅读[`mobile/`](./mobile/README.md) ，**不需要 adb**：
+
+```bash
+cd budaolepao/mobile
+bash install.sh     # 一次性：装依赖 + arm64 frida-server + 生成 hook 脚本
+bash start.sh       # 一键挂 hook，选 1=QQ / 2=微信
+```
+
+要求手机已 root（Magisk / KernelSU）
+
+**推荐使用lsp模块解决** 
+
 ## TIP 
 
 若使用**QQ登录**，会提示该应用非官方正版应用，修复教程请查看 [QQ登录说明](./QQ登录说明.md)

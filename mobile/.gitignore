@@ -1,0 +1,5 @@
+bin/
+hook/signature-spoof.js
+hook/cert.hex
+__pycache__/
+*.pyc
